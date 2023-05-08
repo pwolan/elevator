@@ -7,7 +7,7 @@ class ElevatorSystem {
     private waitingFloors: FloorQueue[] = [];
     constructor(elevatorsCount: number, cells: HTMLDivElement[][], private config: config) {
         for (let i = 1; i <= elevatorsCount; i++) {
-            this.elevators.push(new Elevator(i, cells, config))
+            this.elevators.push(new Elevator(i, cells, config, this.waitingFloors))
         }
         for (let i = 0; i < config.floors; i++) {
             this.waitingFloors.push(new FloorQueue(i, cells, config))
@@ -15,12 +15,9 @@ class ElevatorSystem {
         // this.waitingFloors[3].step()
     }
     step() {
-        // gdzie windy sa potrzebne
 
-        // winda jedzie sobie
-        for (const elevator of this.elevators) {
-            elevator.step()
-        }
+
+
 
         // ludzie przychodza i wołają windę
 
@@ -32,6 +29,11 @@ class ElevatorSystem {
             }
         }
 
+
+        // winda jedzie sobie
+        for (const elevator of this.elevators) {
+            elevator.step()
+        }
 
 
 

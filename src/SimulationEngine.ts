@@ -51,7 +51,7 @@ class SimulationEngine {
 
         const interval = setInterval(() => {
             this.iterate()
-        }, 2000)
+        }, 1000)
     }
     iterate() {
         this.system.step()
