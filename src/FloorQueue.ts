@@ -35,13 +35,14 @@ class FloorQueue {
 
     }
     step() {
-        const doPeopleCame = Math.random() * 1 < 1
+        const doPeopleCame = Math.random() * 10 < 1
         if (!doPeopleCame) return
 
         const n = Math.ceil(Math.random() * 4)
         for (let i = 0; i < n; i++) {
             const destination = this.getRandomDestination()
             this.addPerson(destination)
+            this.hasCalledElevator = true
         }
 
     }
@@ -68,6 +69,7 @@ class FloorQueue {
         return this._hasCalledElevator
     }
     public set hasCalledElevator(called: boolean) {
+        this.button.style.background = called ? "green" : "brown"
         this._hasCalledElevator = called
     }
     public getPeople(): Person[] {

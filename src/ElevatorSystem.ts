@@ -4,31 +4,31 @@ import FloorQueue from "./FloorQueue";
 
 class ElevatorSystem {
     private elevators: Elevator[] = [];
+    private floorQueues: FloorQueue[] = [];
     private waitingFloors: FloorQueue[] = [];
     constructor(elevatorsCount: number, cells: HTMLDivElement[][], private config: config) {
         for (let i = 1; i <= elevatorsCount; i++) {
-            this.elevators.push(new Elevator(i, cells, config, this.waitingFloors))
+            this.elevators.push(new Elevator(i, cells, config, this.floorQueues))
         }
         for (let i = 0; i < config.floors; i++) {
-            this.waitingFloors.push(new FloorQueue(i, cells, config))
+            this.floorQueues.push(new FloorQueue(i, cells, config))
         }
-        // this.waitingFloors[3].step()
     }
     step() {
-
-
-
+        //TODO max czas oczekiwania
 
         // ludzie przychodza i wołają windę
 
-
-        for (const queue of this.waitingFloors) {
-            // queue.step()
-            if (queue.hasCalledElevator) {
-                this.callElevator(queue)
+        for (const queue of this.floorQueues) {
+            queue.step()
+            if (queue.hasCalledElevator && !this.waitingFloors.includes(queue)) {
+                this.waitingFloors.push(queue)
             }
         }
-
+        console.log(this.waitingFloors.map(f => f.floor));
+        for (const queue of this.waitingFloors) {
+            this.callElevator(queue)
+        }
 
         // winda jedzie sobie
         for (const elevator of this.elevators) {
@@ -37,27 +37,49 @@ class ElevatorSystem {
 
 
 
-
-
-
-
     }
     private callElevator(queue: FloorQueue) {
         // trzeba ulepszyć isFull, bo mogą wysiąść w międzyczasie
 
-        // najbliższy który jedzie w dobrą stronę i może zmieścić kogoś
+        // gdy wszystkie pełne poczekaj 
+
+
+
         const notFullElevator = this.elevators
             .filter(e => !e.isFull())
 
-        const sortedElevator = notFullElevator.sort((a, b) => {
-            const a_distance = Math.abs(a.currFloor - queue.floor)
-            const b_distance = Math.abs(b.currFloor - queue.floor)
+        // all elevators are full
+        if (notFullElevator.length === 0) {
+            return
+        }
 
-            return a_distance - b_distance
+
+        // first use empty elevators
+
+        const sortedElevator = notFullElevator.sort((a, b) => {
+            const aDistance = Math.abs(a.currFloor - queue.floor) / this.config.floors
+            const bDistance = Math.abs(b.currFloor - queue.floor) / this.config.floors
+
+            const aSpace = a.getNumberOfPeopleInside() / this.config.capacity
+            const bSpace = b.getNumberOfPeopleInside() / this.config.capacity
+
+            const aDirection = a.getDirectionMetrics(aDistance)
+            const bDirection = b.getDirectionMetrics(bDistance)
+
+
+
+            const aMetrics = aDistance + aSpace + aDirection
+            const bMetrics = bDistance + bSpace + bDirection
+
+
+            return aMetrics - bMetrics
         })
         let elevator = sortedElevator
             .find(e => {
-                const distance = e.currFloor - queue.floor
+                if (e.direction === "none") {
+                    return true
+                }
+                const distance = e.currPosition - queue.floor * 3
                 if (distance === 0) {
                     return true
                 } else if (distance > 0) {
@@ -69,7 +91,7 @@ class ElevatorSystem {
         if (!elevator) {
             elevator = sortedElevator[0]
         }
-        // console.log(elevator);
+        this.waitingFloors.shift()
         elevator.call(queue)
     }
 }

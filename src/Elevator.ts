@@ -39,7 +39,7 @@ class Elevator {
 
     step() {
         if (this.destinationFloors.length === 0) {
-            // this.direction = "none"
+            this.direction = "none"
             return;
         }
         // debugger
@@ -56,16 +56,15 @@ class Elevator {
                 while (this.peopleInside.length < this.capacity && peopleToGetIn.length !== 0) {
                     const person = this.queues[floor].removePerson()!
                     this.peopleInside.push(person)
-                    console.log(person.destination);
                     this.destinationFloors.push(person.destination)
                 }
-                if (peopleToGetIn.length === 0) {
-                    const floorToRemove = this.destinationFloors.find(d => d === this.currFloor)
-                    if (floorToRemove !== undefined) {
-                        this.destinationFloors = this.destinationFloors.filter(d => d !== this.currFloor)
-                        this.queues[floorToRemove].hasCalledElevator = false;
 
-                    }
+                this.destinationFloors = this.destinationFloors.filter(d => d !== this.currFloor)
+                this.queues[floor].hasCalledElevator = false;
+
+                if (peopleToGetIn.length !== 0) {
+                    //call again
+                    this.queues[floor].hasCalledElevator = true
                 }
             }
 
@@ -86,13 +85,22 @@ class Elevator {
                     this.direction = "down"
                     this.velocity = -1
                 }
-            } else {
+            } else if (this.direction === "down") {
                 const isDestBelow = this.destinationFloors.findIndex(d => d <= this.currFloor)
                 if (isDestBelow > -1) {
                     this.velocity = -1
                 } else {
                     this.velocity = 1
                     this.direction = "up"
+                }
+            } else if (this.direction === "none") {
+                const isDestAbove = this.destinationFloors.findIndex(d => d > this.currFloor)
+                if (isDestAbove > -1) {
+                    this.velocity = 1
+                    this.direction = "up"
+                } else {
+                    this.velocity = -1
+                    this.direction = "down"
                 }
             }
             this.addToCurrPosition(this.velocity)
@@ -119,6 +127,24 @@ class Elevator {
     }
     public isFull(): boolean {
         return this.capacity === this.numberOfPeopleInside
+    }
+    public getNumberOfPeopleInside(): number {
+        return this.numberOfPeopleInside
+    }
+    public getDirectionMetrics(distance: number): 0 | 1 {
+
+        if (this.direction === "none") {
+            return 1
+        } else if (this.direction === "up") {
+            if (distance >= 0) {
+                return 1
+            }
+        } else if (this.direction === "down") {
+            if (distance <= 0) {
+                return 1
+            }
+        }
+        return 0
     }
 }
 

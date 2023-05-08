@@ -10,8 +10,8 @@ export interface config {
 
 const c: config = {
   mainSelector: '#main',
-  elevators: 2,
-  floors: 6,
+  elevators: 16,
+  floors: 10,
   capacity: 5,
   maxAcceleration: 1,
   maxVelocity: 1
