@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config } from "./ConfigBuilder";
 import Person from "./Person";
 
 class FloorQueue {
@@ -17,7 +17,7 @@ class FloorQueue {
         const index = 3 * (this.conf.floors - floor) - 2
         this.cell = cells[index][1]
         this.button = cells[index][2]
-        this.cell.style.backgroundColor = "blue"
+        this.cell.style.backgroundColor = "rgb(37, 99, 235)"
         this.cell.style.color = "white"
         this.cell.textContent = "0"
         this.button.style.backgroundColor = "brown"
@@ -31,7 +31,7 @@ class FloorQueue {
     handleButton() {
         const destination = this.getRandomDestination()
         this.addPerson(destination)
-        this._hasCalledElevator = true
+        this.hasCalledElevator = true
 
     }
     step() {

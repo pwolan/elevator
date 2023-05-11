@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config } from "./ConfigBuilder";
 import FloorQueue from "./FloorQueue";
 import Person from "./Person";
 
@@ -6,14 +6,13 @@ class Elevator {
     private destinationFloors: number[] = [];
     public currFloor = 0;
     public currPosition = 0;
-    public velocity = 0;
     public direction: "up" | "down" | "none" = "up";
     private capacity;
     private numberOfPeopleInside = 0;
     private peopleInside: Person[] = [];
     private id: number;
     private column: HTMLDivElement[];
-    constructor(id: number, cells: HTMLDivElement[][], private conf: config, private queues: FloorQueue[]) {
+    constructor(id: number, cells: HTMLDivElement[][], conf: config, private queues: FloorQueue[]) {
         this.id = id;
         this.capacity = conf.capacity
         this.column = cells.map(row => row[3 * id + 1]).reverse().slice(1)
@@ -33,8 +32,6 @@ class Elevator {
         if (!this.destinationFloors.includes(queue.floor)) {
             this.destinationFloors.push(queue.floor)
         }
-
-
     }
 
     step() {
@@ -42,9 +39,9 @@ class Elevator {
             this.direction = "none"
             return;
         }
-        // debugger
-        if (this.currPosition % 3 === 0 && this.destinationFloors.includes(this.currFloor)) {
-            this.velocity = 0;
+        const isExactOnFloor = this.currPosition % 3 === 0
+        const isFloorInDestinations = this.destinationFloors.includes(this.currFloor)
+        if (isExactOnFloor && isFloorInDestinations) {
 
             // getting out people
             this.peopleInside = this.peopleInside.filter(p => p.destination !== this.currFloor)
@@ -69,9 +66,6 @@ class Elevator {
             }
 
 
-
-
-
             this.numberOfPeopleInside = this.peopleInside.length
             this.render()
 
@@ -80,37 +74,30 @@ class Elevator {
             if (this.direction === "up") {
                 const isDestAbove = this.destinationFloors.findIndex(d => d >= this.currFloor)
                 if (isDestAbove > -1) {
-                    this.velocity = 1
+                    this.addToCurrPosition(1)
                 } else {
                     this.direction = "down"
-                    this.velocity = -1
+                    this.addToCurrPosition(-1)
                 }
             } else if (this.direction === "down") {
                 const isDestBelow = this.destinationFloors.findIndex(d => d <= this.currFloor)
                 if (isDestBelow > -1) {
-                    this.velocity = -1
+                    this.addToCurrPosition(-1)
                 } else {
-                    this.velocity = 1
+                    this.addToCurrPosition(1)
                     this.direction = "up"
                 }
             } else if (this.direction === "none") {
                 const isDestAbove = this.destinationFloors.findIndex(d => d > this.currFloor)
                 if (isDestAbove > -1) {
-                    this.velocity = 1
+                    this.addToCurrPosition(1)
                     this.direction = "up"
                 } else {
-                    this.velocity = -1
+                    this.addToCurrPosition(-1)
                     this.direction = "down"
                 }
             }
-            this.addToCurrPosition(this.velocity)
         }
-
-
-
-
-
-
 
     }
     addToCurrPosition(velocity: number) {
@@ -119,9 +106,6 @@ class Elevator {
             this.currPosition = 0
         }
 
-        // if (this.currPosition >= (this.conf.floors - 1)*3) {
-        //     this.currPosition = (this.conf.floors - 1)*3
-        // }
         this.currFloor = Math.floor(this.currPosition / 3)
         this.render()
     }
@@ -132,7 +116,6 @@ class Elevator {
         return this.numberOfPeopleInside
     }
     public getDirectionMetrics(distance: number): 0 | 1 {
-
         if (this.direction === "none") {
             return 1
         } else if (this.direction === "up") {
