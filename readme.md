@@ -1,3 +1,19 @@
-user nie ma wpływu która winda przyjedzie 
-windy są takie same
-Na każdym piętrze jest szansa że przyjdzie od 1 do 4 osób
+URUCHOMIENIE
+==================
+npm run dev  - w terminalu
+
+Następnie przejście pod podany w teminalu adres
+
+
+OPIS
+==================
+System umożliwia wybranie konfiguracji startowej (ilość pięter, ilość wind, pojemność wind). Każda winda jest taka sama. 
+
+Po uruchomieniu symulacji klikając w brązowe przyciski można dodawać osoby do kolejki oczekujących na danym piętrze. Liczba osób oczekujących jest wyświetlana w niebieskiej komórce.
+Można także włączyć tryb któ©y sam będzie symulował przychodzenie nowych osób.
+System informuje o tym ile najdłużej musiała czekać osoba aby wsiąść do windy.
+
+
+Algorytm przywoływania woła windę według kolejności zgłoszeń. Jeśli na danym piętrze została już przywołana winda wtedy nie woła jej się po raz drugi do momentu aż ta pierwsza przyjedzie.
+
+Wybór windy, która znajdzie się na danym piętrze zależy od odległości windy od potencjalnego celu, zapełnienia i kierunku w którym jedzie obecnie.   

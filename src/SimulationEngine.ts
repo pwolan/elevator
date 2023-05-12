@@ -7,12 +7,14 @@ class SimulationEngine {
     private interval: number;
     private autoComingCheckbox: HTMLInputElement;
     private statsEl: HTMLDivElement;
+    private cellsOnTheLeft: number;
     constructor(private config: config) {
+        this.cellsOnTheLeft = 3
 
     }
     init() {
         const main: HTMLDivElement = document.querySelector(this.config.mainSelector) as HTMLDivElement
-        const w = this.config.elevators * 3 + 3
+        const w = this.config.elevators * 3 + this.cellsOnTheLeft
         const h = this.config.floors * 3
         main.style.gridTemplateColumns = `repeat(${w}, 30px)`
 
@@ -25,7 +27,7 @@ class SimulationEngine {
 
         this.statsEl = document.getElementById('stats') as HTMLDivElement
         this.statsEl.classList.remove("hidden")
-        this.system = new ElevatorSystem(this.config.elevators, this.cells, longestWaitTimeEl, this.autoComingCheckbox.checked, this.config)
+        this.system = new ElevatorSystem(this.config.elevators, this.cells, longestWaitTimeEl, this.autoComingCheckbox.checked, this.cellsOnTheLeft, this.config)
 
 
         this.interval = setInterval(() => {
@@ -38,11 +40,13 @@ class SimulationEngine {
             let row: HTMLDivElement[] = []
             for (let j = 0; j < w; j++) {
                 const el = document.createElement("div") as HTMLDivElement
-                el.classList.add("cell")
-                row.push(el)
-                if (j <= 2 || i === h - 1) {
-                    el.style.backgroundColor = "white"
+                if (j < this.cellsOnTheLeft || i === h - 1) {
+                    el.classList.add("cell_white")
+                } else {
+                    el.classList.add("cell")
+
                 }
+                row.push(el)
                 main.appendChild(el)
             }
             this.cells.push(row)

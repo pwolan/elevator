@@ -17,21 +17,25 @@
         <label class="mt-4 flex items-center justify-between">Number of floors: <input id="floors" value="4"
             type="number"
             class="w-1/2 shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></label>
-        <p class="text-red-600 text-sm text-center mt-2" id="floors_error">Please choose number of floors</p>
+        <p class="text-red-600 text-sm text-center mt-2" id="floors_error">Please choose number of floors that is
+          greater than 0</p>
       </div>
       <div>
         <label class="mt-4 flex items-center justify-between">Number of elevators: <input id="elevators" value="4"
             type="number"
             class="w-1/2 shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></label>
-        <p class="text-red-600 text-sm text-center mt-2" id="elevators_error">Please choose number of elevators</p>
+        <p class="text-red-600 text-sm text-center mt-2" id="elevators_error">Please choose number of elevators that is
+          greater than 0</p>
       </div>
       <div>
         <label class="mt-4 flex items-center justify-between">Elevator capacity: <input id="capacity" value="4"
             type="number"
             class="w-1/2 shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></label>
-        <p class="text-red-600 text-sm text-center mt-2" id="capacity_error">Please choose elevator capacity</p>
+        <p class="text-red-600 text-sm text-center mt-2" id="capacity_error">Please choose elevator capacity that is
+          greater than 0</p>
       </div>
-      <button id="start" class="bg-blue-600 text-white font-bold py-2 px-4 mt-4 rounded w-40 mx-auto">Start</button>
+      <button id="start"
+        class="bg-blue-600 text-white font-bold py-2 px-4 mt-4 rounded w-40 mx-auto hover:bg-blue-500">Start</button>
     </div>
     <div id="stats" class="hidden flex flex-col align-center justify-center mx-auto text-xl mt-20">
       <div>Longest wait time: <span id="wait_time">0</span></div>

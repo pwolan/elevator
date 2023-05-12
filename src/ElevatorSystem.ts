@@ -9,9 +9,9 @@ class ElevatorSystem {
     private autoComing: boolean;
     private longestWaitTimeEl: HTMLSpanElement;
     private longestWaitTime: number;
-    constructor(elevatorsCount: number, cells: HTMLDivElement[][], longestWaitTimeEl: HTMLSpanElement, autoComing: boolean, private config: config) {
+    constructor(elevatorsCount: number, cells: HTMLDivElement[][], longestWaitTimeEl: HTMLSpanElement, autoComing: boolean, cellsOnTheLeft: number, private config: config) {
         for (let i = 1; i <= elevatorsCount; i++) {
-            this.elevators.push(new Elevator(i, cells, config, this.floorQueues))
+            this.elevators.push(new Elevator(i, cells, config, this.floorQueues, cellsOnTheLeft))
         }
         for (let i = 0; i < config.floors; i++) {
             this.floorQueues.push(new FloorQueue(i, cells, config))
@@ -52,7 +52,6 @@ class ElevatorSystem {
             .map(p => p.getWaitingTime())
         if (times.length > 0) {
             const maxT = Math.max(...times)
-            console.log(maxT);
             if (maxT > this.longestWaitTime) {
                 this.longestWaitTime = maxT
                 this.longestWaitTimeEl.textContent = maxT.toString()
@@ -93,7 +92,6 @@ class ElevatorSystem {
         elevator.call(queue)
     }
     public setAutoComing(val: boolean) {
-        console.log(val);
         this.autoComing = val
     }
 }

@@ -12,10 +12,10 @@ class Elevator {
     private peopleInside: Person[] = [];
     private id: number;
     private column: HTMLDivElement[];
-    constructor(id: number, cells: HTMLDivElement[][], conf: config, private queues: FloorQueue[]) {
+    constructor(id: number, cells: HTMLDivElement[][], conf: config, private queues: FloorQueue[], cellsOnTheLeft: number) {
         this.id = id;
         this.capacity = conf.capacity
-        this.column = cells.map(row => row[3 * id + 1]).reverse()
+        this.column = cells.map(row => row[3 * id + (cellsOnTheLeft - 2)]).reverse()
         const idCell = this.column.shift()!
         idCell.textContent = this.id.toString()
         this.render()
