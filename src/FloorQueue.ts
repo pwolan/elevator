@@ -15,13 +15,14 @@ class FloorQueue {
     ) {
         this.floor = floor
         const index = 3 * (this.conf.floors - floor) - 2
+        const idCell = cells[index][0]
         this.cell = cells[index][1]
         this.button = cells[index][2]
+        idCell.textContent = floor.toString()
         this.cell.style.backgroundColor = "rgb(37, 99, 235)"
         this.cell.style.color = "white"
         this.cell.textContent = "0"
         this.button.style.backgroundColor = "brown"
-
 
 
         this.button.addEventListener("click", () => {

@@ -15,7 +15,9 @@ class Elevator {
     constructor(id: number, cells: HTMLDivElement[][], conf: config, private queues: FloorQueue[]) {
         this.id = id;
         this.capacity = conf.capacity
-        this.column = cells.map(row => row[3 * id + 1]).reverse().slice(1)
+        this.column = cells.map(row => row[3 * id + 1]).reverse()
+        const idCell = this.column.shift()!
+        idCell.textContent = this.id.toString()
         this.render()
     }
     render() {

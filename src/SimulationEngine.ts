@@ -34,30 +34,15 @@ class SimulationEngine {
     }
 
     renderCells(main: HTMLDivElement, w: number, h: number) {
-        let floor = this.config.floors
-        let elevators = 0
         for (let i = 0; i < h; i++) {
             let row: HTMLDivElement[] = []
             for (let j = 0; j < w; j++) {
                 const el = document.createElement("div") as HTMLDivElement
                 el.classList.add("cell")
                 row.push(el)
-                if (j === 0) {
+                if (j <= 2 || i === h - 1) {
                     el.style.backgroundColor = "white"
-                    if (i % 3 === 1) {
-                        el.textContent = (--floor).toString();
-                    }
-
-                } else if (j === 1 || j === 2) {
-                    el.style.backgroundColor = "white"
-
-                } else if (i === h - 1) {
-                    el.style.backgroundColor = "white"
-                    if (j % 3 === 1) {
-                        el.textContent = (++elevators).toString()
-                    }
                 }
-
                 main.appendChild(el)
             }
             this.cells.push(row)
