@@ -19,10 +19,9 @@ class FloorQueue {
         this.cell = cells[index][1]
         this.button = cells[index][2]
         idCell.textContent = floor.toString()
-        this.cell.style.backgroundColor = "rgb(37, 99, 235)"
-        this.cell.style.color = "white"
+        this.cell.classList.add("queue")
         this.cell.textContent = "0"
-        this.button.style.backgroundColor = "brown"
+        this.button.classList.add("queue_button")
 
 
         this.button.addEventListener("click", () => {
@@ -70,7 +69,11 @@ class FloorQueue {
         return this._hasCalledElevator
     }
     public set hasCalledElevator(called: boolean) {
-        this.button.style.background = called ? "green" : "brown"
+        if (called) {
+            this.button.classList.add("active")
+        } else {
+            this.button.classList.remove("active")
+        }
         this._hasCalledElevator = called
     }
     public getPeople(): Person[] {

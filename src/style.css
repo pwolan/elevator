@@ -24,6 +24,10 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .cell {
   width: 30px;
   height: 30px;
@@ -34,11 +38,42 @@ html {
 
 }
 
+.cell_white {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
 #main {
   grid-template-columns: repeat(20, 30px);
 
 }
 
-* {
-  box-sizing: border-box;
+.queue {
+  background-color: rgb(37, 99, 235);
+  color: white;
+}
+
+
+.queue_button {
+  background-color: brown;
+}
+
+.queue_button.active {
+  background-color: green;
+}
+
+.queue_button:hover {
+  background-color: rgb(161, 78, 78);
+  cursor: pointer;
+}
+
+.queue_button:hover.active {
+  background-color: rgb(53, 133, 53);
+  cursor: pointer;
 }

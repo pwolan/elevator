@@ -32,7 +32,8 @@ class ConfigBuilder {
 
     this.renderErrors()
 
-    const isNotValid = isNaN(elevators) || isNaN(floors) || isNaN(capacity)
+    let isNotValid = this.isNotPositive(floors) || this.isNotPositive(elevators) || this.isNotPositive(capacity)
+
     if (isNotValid) {
       return null
     }
@@ -49,7 +50,7 @@ class ConfigBuilder {
     const floors = this.floorsInput.valueAsNumber
     const capacity = this.capacityInput.valueAsNumber
 
-    if (isNaN(elevators)) {
+    if (isNaN(elevators) || elevators <= 0) {
       this.elevatorError.classList.remove("hidden")
       this.elevatorsInput.classList.add("border-red-500")
     } else {
@@ -57,7 +58,7 @@ class ConfigBuilder {
       this.elevatorsInput.classList.remove("border-red-500")
     }
 
-    if (isNaN(floors)) {
+    if (isNaN(floors) || floors <= 0) {
       this.floorsError.classList.remove("hidden")
       this.floorsInput.classList.add("border-red-500")
     } else {
@@ -65,7 +66,7 @@ class ConfigBuilder {
       this.floorsInput.classList.remove("border-red-500")
     }
 
-    if (isNaN(capacity)) {
+    if (isNaN(capacity) || capacity <= 0) {
       this.capacityError.classList.remove("hidden")
       this.capacityInput.classList.add("border-red-500")
     } else {
@@ -73,23 +74,10 @@ class ConfigBuilder {
       this.capacityInput.classList.remove("border-red-500")
     }
   }
-}
-
-function getConfig(): config {
-
-  const floorsBtn = document.getElementById('floors') as HTMLInputElement
-  const elevatorsBtn = document.getElementById('elevators') as HTMLInputElement
-  const capacityBtn = document.getElementById('capacity') as HTMLInputElement
-
-  // if()
-
-  const c: config = {
-    mainSelector: '#main',
-    elevators: elevatorsBtn.valueAsNumber,
-    floors: floorsBtn.valueAsNumber + 1,
-    capacity: capacityBtn.valueAsNumber,
+  isNotPositive(n: number): boolean {
+    return isNaN(n) || n <= 0
   }
-  return c
 }
+
 
 export default ConfigBuilder
