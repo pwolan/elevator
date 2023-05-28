@@ -1,6 +1,8 @@
 URUCHOMIENIE
 ==================
-npm run dev  - w terminalu
+Wpisanie poniższych komend w terminalu:
+npm install
+npm run dev
 
 Następnie przejście pod podany w teminalu adres
 
